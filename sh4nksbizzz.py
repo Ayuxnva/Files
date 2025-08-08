@@ -87,7 +87,7 @@ print(f"{Fore.CYAN}{Style.BRIGHT}😾 𝐒𝐡𝐚𝐧𝐤𝐬 𝐩𝐚𝐢𝐝 
 
 ID = input(f"{Fore.YELLOW}𝐄𝐧𝐭𝐞𝐫 𝐲𝐨𝐮𝐫 𝐭𝐞𝐥𝐞𝐠𝐫𝐚𝐦 𝐮𝐬𝐞𝐫 𝐢𝐝: {Fore.RESET}").strip()
 
-# GitHub raw link
+# GitHub raw file
 GITHUB_URL = "https://raw.githubusercontent.com/Ayuxnva/Paid-users/main/b_users"
 
 try:
@@ -126,28 +126,38 @@ if not access_granted:
     os._exit(0)
 
 # ====================================
-# Background Thread for Live Countdown
+# Show Timer Only for 3 Seconds
 # ====================================
-def show_timer():
+def show_timer_limited():
     print(f"{Fore.MAGENTA}⏳ 𝐒𝐮𝐛𝐬𝐜𝐫𝐢𝐩𝐭𝐢𝐨𝐧 𝐓𝐢𝐦𝐞𝐫 𝐒𝐭𝐚𝐫𝐭𝐞𝐝...")
-    while True:
+    for _ in range(3):  # Show only 3 updates (3 seconds)
         remaining = expiry_datetime - datetime.now()
         if remaining.total_seconds() <= 0:
             print(f"\n{Fore.RED}❌ 𝐒𝐮𝐛𝐬𝐜𝐫𝐢𝐩𝐭𝐢𝐨𝐧 𝐞𝐱𝐩𝐢𝐫𝐞𝐝.")
             os._exit(0)
-
         days = remaining.days
         hours, remainder = divmod(remaining.seconds, 3600)
         minutes, seconds = divmod(remainder, 60)
         print(f"{Fore.YELLOW}⏱️ Time Left: {days}d {hours}h {minutes}m {seconds}s", end='\r')
         sleep(1)
+    print(f"{Fore.LIGHTBLACK_EX}\n⏱️ 𝐓𝐢𝐦𝐞𝐫 𝐡𝐢𝐝𝐝𝐞𝐧. 𝐒𝐮𝐛𝐬𝐜𝐫𝐢𝐩𝐭𝐢𝐨𝐧 𝐜𝐨𝐮𝐧𝐭𝐝𝐨𝐰𝐧 𝐜𝐨𝐧𝐭𝐢𝐧𝐮𝐞𝐬 𝐢𝐧 𝐛𝐚𝐜𝐤𝐠𝐫𝐨𝐮𝐧𝐝...")
 
-# Start countdown in background
-timer_thread = threading.Thread(target=show_timer, daemon=True)
-timer_thread.start()
+# Also keep checking expiry in background
+def monitor_expiry():
+    while True:
+        if datetime.now() >= expiry_datetime:
+            print(f"\n{Fore.RED}❌ 𝐒𝐮𝐛𝐬𝐜𝐫𝐢𝐩𝐭𝐢𝐨𝐧 𝐞𝐱𝐩𝐢𝐫𝐞𝐝. 𝐄𝐱𝐢𝐭𝐢𝐧𝐠...")
+            os._exit(0)
+        sleep(10)
+
+# Start monitoring expiry (but not showing timer)
+threading.Thread(target=monitor_expiry, daemon=True).start()
+
+# Show timer for only 3 seconds
+show_timer_limited()
 
 # ============================
-# Wait Before Running Main Tool
+# Run Paid Tool After 3 Seconds
 # ============================
 sleep(3)
 print(f"\n{Fore.CYAN}🚀 𝐒𝐭𝐚𝐫𝐭𝐢𝐧𝐠 𝐘𝐨𝐮𝐫 𝐓𝐨𝐨𝐥...\n")
@@ -157,14 +167,7 @@ sleep(1)
 # 𝐘𝐎𝐔𝐑 𝐏𝐀𝐈𝐃 𝐓𝐎𝐎𝐋 𝐇𝐄𝐑𝐄
 # ==========================
 print(f"{Fore.GREEN}✨ 𝐏𝐀𝐈𝐃 𝐓𝐎𝐎𝐋 𝐈𝐒 𝐍𝐎𝐖 𝐑𝐔𝐍𝐍𝐈𝐍𝐆. 𝐄𝐍𝐉𝐎𝐘.!")
-def K():
-    L = f"""{Fore.RED}𝐅𝐢𝐥𝐞 𝐡𝐚𝐬 𝐞𝐱𝐩𝐢𝐫𝐞𝐝.{Style.RESET_ALL}
-{Fore.YELLOW}DM {Fore.MAGENTA}@vzn7p {Fore.YELLOW}𝐓𝐨 𝐛𝐮𝐲 𝐦𝐨𝐫𝐞 𝐭𝐢𝐦𝐞.{Style.RESET_ALL}"""
-    M(L, D=0.05)
 
-def M(N, D=0.01):
-    for O in N.split("\n"):
-        B(O, D)
 
 F()
 H()
