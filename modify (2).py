@@ -67,8 +67,9 @@ def H():
         print(" " * 40 + J)
 import requests
 import os
-from datetime import datetime, timedelta
+from datetime import datetime
 from time import sleep
+import threading
 
 try:
     from colorama import Fore, Style, init
@@ -86,15 +87,19 @@ print(f"{Fore.CYAN}{Style.BRIGHT}😾 𝐒𝐡𝐚𝐧𝐤𝐬 𝐩𝐚𝐢𝐝 
 
 ID = input(f"{Fore.YELLOW}𝐄𝐧𝐭𝐞𝐫 𝐲𝐨𝐮𝐫 𝐭𝐞𝐥𝐞𝐠𝐫𝐚𝐦 𝐮𝐬𝐞𝐫 𝐢𝐝: {Fore.RESET}").strip()
 
+# GitHub raw file
+GITHUB_URL = "https://raw.githubusercontent.com/Ayuxnva/Paid-users/main/b_users"
+
 try:
-    response = requests.get("https://raw.githubusercontent.com/Ayuxnva/Paid-users/main/b_users")
+    response = requests.get(GITHUB_URL)
     response.raise_for_status()
     valid_lines = response.text.splitlines()
 except requests.RequestException:
-    print(f"{Fore.RED}⚠️ 𝐅𝐚𝐢𝐥𝐞𝐝 𝐭𝐨 𝐜𝐡𝐞𝐜𝐤 𝐚𝐜𝐜𝐞𝐬𝐬. 𝐜𝐡𝐞𝐜𝐤 𝐲𝐨𝐮𝐫 𝐢𝐧𝐭𝐞𝐫𝐧𝐞𝐭 𝐜𝐨𝐧𝐧𝐞𝐜𝐭𝐢𝐨𝐧.")
+    print(f"{Fore.RED}⚠️ 𝐅𝐚𝐢𝐥𝐞𝐝 𝐭𝐨 𝐜𝐡𝐞𝐜𝐤 𝐚𝐜𝐜𝐞𝐬𝐬. 𝐂𝐡𝐞𝐜𝐤 𝐢𝐧𝐭𝐞𝐫𝐧𝐞𝐭.")
     os._exit(1)
 
 access_granted = False
+expiry_datetime = None
 
 for line in valid_lines:
     try:
@@ -107,46 +112,61 @@ for line in valid_lines:
             current_datetime = datetime.now()
 
             if current_datetime <= expiry_datetime:
-                print(f"{Fore.GREEN}✅ 𝐀𝐜𝐜𝐞𝐬𝐬 𝐠𝐫𝐚𝐧𝐭𝐞𝐝. 𝐰𝐞𝐥𝐜𝐨𝐦𝐞 𝐩𝐫𝐞𝐦𝐢𝐮𝐦 𝐮𝐬𝐞𝐫 ✨")
+                print(f"{Fore.GREEN}✅ 𝐀𝐜𝐜𝐞𝐬𝐬 𝐠𝐫𝐚𝐧𝐭𝐞𝐝. 𝐖𝐞𝐥𝐜𝐨𝐦𝐞 𝐏𝐫𝐞𝐦𝐢𝐮𝐦 𝐔𝐬𝐞𝐫 ✨")
                 access_granted = True
             else:
-                print(f"{Fore.RED}❌ 𝐘𝐨𝐮𝐫 𝐬𝐮𝐛𝐬𝐜𝐫𝐢𝐩𝐭𝐢𝐨𝐧 𝐞𝐱𝐩𝐢𝐫𝐞𝐝 𝐨𝐧 {expiry_datetime.strftime('%Y-%m-%d %H:%M')}.")
+                print(f"{Fore.RED}❌ 𝐒𝐮𝐛𝐬𝐜𝐫𝐢𝐩𝐭𝐢𝐨𝐧 𝐞𝐱𝐩𝐢𝐫𝐞𝐝 𝐨𝐧 {expiry_datetime.strftime('%Y-%m-%d %H:%M')}.")
             break
-    except Exception as e:
+    except Exception:
         pass
 
 if not access_granted:
-    print(f"{Fore.RED}❌ 𝐀𝐜𝐜𝐞𝐬𝐬 𝐝𝐞𝐧𝐢𝐞𝐝. 𝐂𝐨𝐧𝐭𝐚𝐜𝐭 @vzn7p 𝐟𝐨𝐫 𝐬𝐮𝐛𝐬𝐜𝐫𝐢𝐛𝐢𝐭𝐢𝐨𝐧.")
+    print(f"{Fore.RED}❌ 𝐀𝐜𝐜𝐞𝐬𝐬 𝐃𝐞𝐧𝐢𝐞𝐝. 𝐂𝐨𝐧𝐭𝐚𝐜𝐭 @vzn7p 𝐟𝐨𝐫 𝐬𝐮𝐛𝐬𝐜𝐫𝐢𝐩𝐭𝐢𝐨𝐧.")
     sleep(2)
     os._exit(0)
 
-print(f"{Fore.CYAN}\n🚀 𝐋𝐨𝐚𝐝𝐢𝐧𝐠 𝐲𝐨𝐮𝐫 𝐩𝐫𝐞𝐦𝐢𝐮𝐦 𝐭𝐨𝐨𝐥. 𝐏𝐥𝐞𝐚𝐬𝐞 𝐰𝐚𝐢𝐭...\n")
+# ====================================
+# Show Timer Only for 3 Seconds
+# ====================================
+def show_timer_limited():
+    print(f"{Fore.MAGENTA}⏳ 𝐒𝐮𝐛𝐬𝐜𝐫𝐢𝐩𝐭𝐢𝐨𝐧 𝐓𝐢𝐦𝐞𝐫 𝐒𝐭𝐚𝐫𝐭𝐞𝐝...")
+    for _ in range(3):  # Show only 3 updates (3 seconds)
+        remaining = expiry_datetime - datetime.now()
+        if remaining.total_seconds() <= 0:
+            print(f"\n{Fore.RED}❌ 𝐒𝐮𝐛𝐬𝐜𝐫𝐢𝐩𝐭𝐢𝐨𝐧 𝐞𝐱𝐩𝐢𝐫𝐞𝐝.")
+            os._exit(0)
+        days = remaining.days
+        hours, remainder = divmod(remaining.seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        print(f"{Fore.YELLOW}⏱️ Time Left: {days}d {hours}h {minutes}m {seconds}s", end='\r')
+        sleep(1)
+    print(f"{Fore.LIGHTBLACK_EX}\n⏱️ 𝐓𝐢𝐦𝐞𝐫 𝐡𝐢𝐝𝐝𝐞𝐧. 𝐒𝐮𝐛𝐬𝐜𝐫𝐢𝐩𝐭𝐢𝐨𝐧 𝐜𝐨𝐮𝐧𝐭𝐝𝐨𝐰𝐧 𝐜𝐨𝐧𝐭𝐢𝐧𝐮𝐞𝐬 𝐢𝐧 𝐛𝐚𝐜𝐤𝐠𝐫𝐨𝐮𝐧𝐝...")
+
+# Also keep checking expiry in background
+def monitor_expiry():
+    while True:
+        if datetime.now() >= expiry_datetime:
+            print(f"\n{Fore.RED}❌ 𝐒𝐮𝐛𝐬𝐜𝐫𝐢𝐩𝐭𝐢𝐨𝐧 𝐞𝐱𝐩𝐢𝐫𝐞𝐝. 𝐄𝐱𝐢𝐭𝐢𝐧𝐠...")
+            os._exit(0)
+        sleep(10)
+
+# Start monitoring expiry (but not showing timer)
+threading.Thread(target=monitor_expiry, daemon=True).start()
+
+# Show timer for only 3 seconds
+show_timer_limited()
+
+# ============================
+# Run Paid Tool After 0 Seconds
+# ============================
+sleep(0)
+print(f"\n{Fore.CYAN}🚀 𝐒𝐭𝐚𝐫𝐭𝐢𝐧𝐠 𝐘𝐨𝐮𝐫 𝐓𝐨𝐨𝐥...\n")
 sleep(1)
-
-# ====================================
-# Countdown Timer Before Starting Tool
-# ====================================
-print(f"{Fore.MAGENTA}⏳ 𝐒𝐮𝐛𝐬𝐜𝐫𝐢𝐩𝐭𝐢𝐨𝐧 𝐓𝐢𝐦𝐞𝐫 𝐒𝐭𝐚𝐫𝐭𝐞𝐝...")
-
-while True:
-    remaining = expiry_datetime - datetime.now()
-    if remaining.total_seconds() <= 0:
-        print(f"\n{Fore.RED}❌ 𝐓𝐢𝐦𝐞𝐫 𝐞𝐧𝐝𝐞𝐝. 𝐘𝐨𝐮𝐫 𝐬𝐮𝐛𝐬𝐜𝐫𝐢𝐩𝐭𝐢𝐨𝐧 𝐢𝐬 𝐨𝐯𝐞𝐫.")
-        os._exit(0)
-
-    days = remaining.days
-    hours, remainder = divmod(remaining.seconds, 3600)
-    minutes, seconds = divmod(remainder, 60)
-
-    print(f"{Fore.YELLOW}⏱️ Time Left: {days}d {hours}h {minutes}m {seconds}s", end='\r')
-    sleep(1)
 
 # ==========================
 # 𝐘𝐎𝐔𝐑 𝐏𝐀𝐈𝐃 𝐓𝐎𝐎𝐋 𝐇𝐄𝐑𝐄
 # ==========================
-# Example:
-# print(f"{Fore.GREEN}✨ 𝐏𝐀𝐈𝐃 𝐓𝐎𝐎𝐋 𝐈𝐒 𝐍𝐎𝐖 𝐑𝐔𝐍𝐍𝐈𝐍𝐆. 𝐄𝐍𝐉𝐎𝐘.!")        
-F()
+print(f"{Fore.GREEN}✨ 𝐏𝐀𝐈𝐃 𝐓𝐎𝐎𝐋 𝐈𝐒 𝐍𝐎𝐖 𝐑𝐔𝐍𝐍𝐈𝐍𝐆. 𝐄𝐍𝐉𝐎𝐘.!")F()
 H()
 
 total = 0
