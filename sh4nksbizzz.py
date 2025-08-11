@@ -198,7 +198,7 @@ def pppp():
     bo = f'\x1b[38;5;{b}m'
     os.system('cls' if os.name == 'nt' else 'clear')
     output = (f"\n"
-                  "┏━━┓┏━━┳━━━━┳━━━━┓\n"
+    "┏━━┓┏━━┳━━━━┳━━━━┓\n"
     "┃┏┓┃┗┫┣┻━━┓━┣━━┓━┃\n"
     "┃┗┛┗┓┃┃╋╋┏┛┏┛╋┏┛┏┛\n"
     "┃┏━┓┃┃┃╋┏┛┏┛╋┏┛┏┛\n"
@@ -210,8 +210,6 @@ def pppp():
     f"[Bad]:[{bademail}]\n"
     f"[Not]:[{goodig}]\n"
     "╚══════════════════════╝\n")
-              
-           
     sys.stdout.write(output)
     sys.stdout.flush()
 yy = 'azertyuiopmlkjhgfdsqwxcvbn'
